@@ -15,6 +15,8 @@ lvtP = lvtP - mean(lvtP(1200:end));
 
 % 1 a) Plot LVT Output Voltage vs. Time
 figure(1);
+grid on;
+xlim([-0.5 0.75]);
 yyaxis left;
 plot(lvtT,lvtV);
 ylabel('Voltage (V)');
