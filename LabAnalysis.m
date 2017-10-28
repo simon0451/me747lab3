@@ -129,12 +129,12 @@ B_english = B/3.28084*0.224809; % converted to [lbf/ft/s]
 % damping force: Favg = B*vi
 [maxVel,minVel] = peakdet(lvtVelocity,1);
 
-vi = minVel(1,2);
+vi = minVel(1:3,2);
 Favg = B_english*vi/12; % [lbf / ft/s] * [in/s] = lbf in/ft = lbf*12;
 
-delV = 18.53+29.5;%lvtVelocity(maxVel(2,1)) - lvtVelocity(minVel(1,1));
-delT = -0.03489+0.06897;%lvtT(maxVel(2,1))-lvtT(minVel(1,1));
-Favg2 = mass_english*delV/delT/12; % currently has units of lbm ft/s^2 = lbf
+% delV = 18.53+29.5;%lvtVelocity(maxVel(2,1)) - lvtVelocity(minVel(1,1));
+% delT = -0.03489+0.06897;%lvtT(maxVel(2,1))-lvtT(minVel(1,1));
+% Favg2 = mass_english*delV/delT/12; % currently has units of lbm ft/s^2 = lbf
 
 figure(4);
 hold on;
