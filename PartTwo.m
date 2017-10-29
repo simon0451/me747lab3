@@ -111,24 +111,29 @@ deflections = [0,-0.025,-0.05,-0.075,-0.1,-0.125,-0.150]; % [in]
 VoutDef = [-5.9836,-79.61,-153.93,-227.99,-302.31,-376.57,-450.23]/1000; % [V]
 
 % linearity of the curves
+% fit the curves
 p1 = polyfit(total_weight,VoutWeight,1);
+p2 = polyfit(deflections,VoutDef,1);
+
+% make the fit lines
 weight = total_weight;
 Vw = weight*p1(1) + p1(2);
-Rsqw = 1 - sum((VoutWeight - Vw).^2)/sum((VoutWeight - mean(VoutWeight)).^2);
 
-p2 = polyfit(deflections,VoutDef,1);
 def = deflections;
 Vdef = def*p2(1) + p2(2);
-RsqD = 1 - sum((VoutDef - Vdef).^2)/sum((VoutDef - mean(VoutDef)).^2);
+
+% R squared formula
+Rsqw = 1 - sum((VoutWeight - Vw).^2)/sum((VoutWeight - mean(VoutWeight)).^2); % weight
+RsqD = 1 - sum((VoutDef - Vdef).^2)/sum((VoutDef - mean(VoutDef)).^2); % deflection
 
 % finding spring constant K
 % match weight to displacement
 def_equivalent = (Vw - p2(2))/p2(1);
-
+% fit the matched displacement-weight data
 p3 = polyfit(def_equivalent,weight,1);
 K = p3(1);
 def_eq = def_equivalent;
-w = def_eq*p3(1) + p3(2);
+w = def_eq*p3(1) + p3(2); % make the best fit line
 
 figure(6);
 hold on;
@@ -160,12 +165,12 @@ vibrationData = importdata('2_2_4 Vibrating.lvm','\t',29);
 vibrationT = vibrationData.data(5000:38000,1);
 vibrationV = vibrationData.data(5000:38000,2);
 
+% usual zeta and frequency calculations using log decrement
 [maxV,~] = peakdet(vibrationV,0.1);
 TV = diff(vibrationT(maxV(:,1)));
 TV = TV(1);
 
 n = 4; % using all the peaks
-
 sigmaV = (1/(n-1))*log(maxV(1,2)/maxV(4,2));
 zetaV = sigmaV/sqrt(4*pi^2 + sigmaV^2); % the damping ratio
 wdV = 2*pi/TV; % The damped frequency in rad/s -> 2pi rad/cyc div s/cyc
