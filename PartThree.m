@@ -105,34 +105,30 @@ Lo=(Rm+2*Rs)/(4*pi*break2);
 plateaudB=-22; %dB, approx
 plateau=10^(plateaudB/20);
 x=.1;
-km=(plateau*((Rm+2*Rs)*Rp))/(2*Rm*x)
-
+omega=2000*2*pi;
+%sens=(sqrt(((2*Rm*Km*x*omega)/((Rm+Rs)*Rp))^2))/(sqrt((((2*Lp*Lo*omega^2)/(Rp*(Rm+2*Rs)))+1)^2)+sqrt((omega*((Lp/Rp)+((2*Lo)/(Rm+2*Rs))))^2))
+sensTerm= sqrt((plateau*(sqrt(((-(2*Lp*Lo*omega^2)/(Rp*(Rm+2*Rs)))+1)^2)+sqrt((omega*((Lp/Rp)+((2*Lo)/(Rm+2*Rs))))^2)))^2);
+Km=(sensTerm*(Rm+Rs)*Rp)/(2*Rm*x*omega);
+Gain=((2*Rm*Km*x)/((Rm+2*Rs)*Rp));
 %%
 tau1=Lp/Rp;
 tau2=(2*Lo)/(Rm+2*Rs);
 
 figure(4)
-sys=tf([-plateau 0],[tau1*tau2 tau1+tau2 1]);
+sys=tf([Gain 0],[tau1*tau2 tau1+tau2 1]);
 
-subplot(2,1,1);
-semilogx(FreqMag,Mag);
-hold on;
-grid on;
-semilogx(refinedFreqMag,refinedMag,'k');
 bode(sys)
-%xlim([100 100000]);
-%ylim([-40 25]);
-ylabel('Amplitude Ratio (dB)','FontSize',12);
-title('Experimental Bode Response Plot','FontSize',14);
-legend('Location','best','Large Time Division','Small Time Division');
-subplot(2,1,2);
-semilogx(FreqPS,PS);
-hold on;
-grid on;
-semilogx(refinedFreqPS,refinedPS,'k');
-%xlim([100 100000]);
-%ylim([-180 0]);
-xlabel('Frequency (Hz)','FontSize',12);
-ylabel('Phase Shift (deg)','FontSize',12);
-legend('Location','best','Large Time Division','Small Time Division');
+% %xlim([100 100000]);
+% %ylim([-40 25]);
+% ylabel('Amplitude Ratio (dB)','FontSize',12);
+% title('Experimental Bode Response Plot','FontSize',14);
+% legend('Location','best','Large Time Division','Small Time Division');
+% subplot(2,1,2);
+% semilogx(FreqPS,PS);
+% 
+% %xlim([100 100000]);
+% %ylim([-180 0]);
+% xlabel('Frequency (Hz)','FontSize',12);
+% ylabel('Phase Shift (deg)','FontSize',12);
+% legend('Location','best','Large Time Division','Small Time Division');
 
