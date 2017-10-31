@@ -182,3 +182,20 @@ plot(vibrationT,vibrationV);
 plot(vibrationT(maxV(:,1)),vibrationV(maxV(:,1)),'O');
 xlabel('Time (s)','FontSize',12);
 ylabel('Voltage (V)','FontSize',12);
+
+%% part e)
+
+% natural frequency = sqrt(spring constant / effective mass)
+Meff = -K/wnV^2;
+
+%% part f)
+
+% input - RI - 1/Cs I = 0; output = 1/Cs I
+% I = CsOutput; input = (R+1/Cs)CsOutput
+% input = RCsOutput + Output
+% output/input = 1/(RCs+1)
+R = 100e3;
+C = 0.047e-6;
+
+sys = tf(1,[R*C 1]);
+bode(sys);
