@@ -46,6 +46,8 @@ for i = 1:length(lvtV)
     end
 end
 
+lvtT = lvtT - lvtT(iniSlopeStartInd);
+
 % 1 a) Plot LVT Output Voltage vs. Time
 figure(1);
 plot(lvtT,lvtV);
