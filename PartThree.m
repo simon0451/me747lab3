@@ -18,17 +18,17 @@ y1data=Mag(80:400);
 x2data=FreqMag(5:10);
 y2data=Mag(5:10);
 p1=polyfit(log10(x1data),y1data,1);
-wlog1=logspace(2,3,500);
+wlog1=logspace(2,4,500);
 mag1=p1(1)*log10(wlog1)+p1(2);
 p2=polyfit(log10(x2data),y2data,1);
-wlog2=logspace(2,3,500);
+wlog2=logspace(2,4,500);
 mag2=p2(1)*log10(wlog2)+p2(2);
 
 %2nd break frequency
 x3data=refinedFreqMag(30:60);
 y3data=refinedMag(30:60);
-x4data=refinedFreqMag(160:240);
-y4data=refinedMag(160:240);
+x4data=refinedFreqMag(170:250);
+y4data=refinedMag(170:250);
 p3=polyfit(log10(x3data),y3data,1);
 wlog3=logspace(4.5,5.6,500);
 mag3=p3(1)*log10(wlog3)+p3(2);
@@ -68,10 +68,10 @@ hold on;
 grid on;
 semilogx(wlog1,mag1,'r')
 semilogx(wlog2,mag2,'b')
-%Intersection1=find(abs(mag2-mag1)<=(0.02));
-%break1=wlog1(Intersection1);
+Intersection1=find(abs(mag2-mag1)<=(0.02));
+break1=wlog1(Intersection1);
 %plot(break1,mag1(Intersection1),'o')
-%xlim([50 5000]);
+xlim([500 10000]);
 %ylim([-40 25]);
 ylabel('Amplitude Ratio (dB)','FontSize',12);
 xlabel('Frequency (rad/s)','FontSize',12);
@@ -86,10 +86,10 @@ hold on;
 grid on;
 semilogx(wlog3,mag3,'r')
 semilogx(wlog4,mag4,'b')
-%Intersection2=find(abs(mag4-mag3)<=(0.03));
-%break2=wlog3(Intersection2);
+Intersection2=find(abs(mag4-mag3)<=(0.03));
+break2=wlog3(Intersection2);
 %plot(3.96e4,mag4(Intersection2),'o')
-%xlim([15000 65000]);
+xlim([50000 400000]);
 %ylim([-40 25]);
 ylabel('Amplitude Ratio (dB)','FontSize',12);
 xlabel('Frequency (rad/s)','FontSize',12);
@@ -99,8 +99,8 @@ title('2nd Break Frequency','FontSize',14);
 Rp=162; %ohms
 Rs=408;
 Rm=1e6;
-Lp=Rp/(2*pi*break1);
-Lo=(Rm+2*Rs)/(4*pi*break2);
+Lp=Rp/(break1);
+Lo=(Rm+2*Rs)/(2*pi*break2);
 
 plateaudB=-22; %dB, approx
 plateau=10^(plateaudB/20);
